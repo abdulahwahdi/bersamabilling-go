@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	Username = "bene.prabowo@bhinneka.com"
-	Password = "PrmL7IvB"
-	BaseURL  = "https://bersamabilling.id/portal/index.php"
+	Username = ""
+	Password = ""
+	BaseURL  = ""
 	Timeout  = 60 * time.Second
 )
 
