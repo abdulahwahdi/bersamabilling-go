@@ -5,7 +5,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/xml"
-	"fmt"
+    "errors"
+    "fmt"
 	"io"
 	"strings"
 	"time"
@@ -74,5 +75,26 @@ func (bb *BersamaBilling) CreatePaymentCode(request CreatePaymentCodeRequest) (r
 		return response, err
 	}
 
+	err = bb.GetFinalError(response)
+	if err != nil {
+	    return response, err
+    }
+
 	return response, nil
+}
+
+func (bb *BersamaBilling) GetFinalError (payload CreatePaymentCodeResponse) error {
+    switch payload.Ack {
+    case "01":
+        return errors.New("Illegal Signature")
+    case "02":
+        return errors.New("Error Tag XML")
+    case "03":
+        return errors.New("Error Content Type")
+    case "04":
+        return errors.New("Error Content Length")
+    case "05":
+        return errors.New("Error Accessing Database")
+    }
+    return nil
 }
